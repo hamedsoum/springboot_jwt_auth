@@ -2,19 +2,25 @@ package vne.userservice.serviceImp;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import vne.userservice.Domain.Role;
 import vne.userservice.Domain.User;
 import vne.userservice.repo.RoleRepo;
 import vne.userservice.repo.UserRepo;
 import vne.userservice.service.UserService;
 
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor @Transactional @Slf4j
 public class userServiceImplementation implements UserService {
 	
-	// ces repo communique directememt avec jpa qui a son tour fait beaucoup de chose dans le backend
+	/*ces repo communique directememt avec jpa qui a 
+	 * son tour fait beaucoup de chose dans le backend
+	 * pour creer des requete pour nous et interroge la base de donnee
+	 * */
 	private final UserRepo userRepo;
 	private final RoleRepo roleRepo;
 
@@ -27,32 +33,31 @@ public class userServiceImplementation implements UserService {
 	
 	@Override
 	public User saveUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		log.debug("Saving new user to the database");
+
+		return userRepo.save(user);
 	}
 
 	@Override
 	public Role saveRole(Role role) {
-		// TODO Auto-generated method stub
-		return null;
+		return roleRepo.save(role);
 	}
 
 	@Override
 	public void addRoleToUser(String username, String roleName) {
-		// TODO Auto-generated method stub
-		
+		User user = userRepo.findByUserName(username);
+		Role role = roleRepo.findByName(roleName);
+		user.getRoles().add(role);
 	}
 
 	@Override
 	public User getUser(String userName) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepo.findByUserName(userName);
 	}
 
 	@Override
 	public List<User> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepo.findAll();
 	}
  
 }
