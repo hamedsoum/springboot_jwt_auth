@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -21,10 +22,18 @@ private final BCryptPasswordEncoder bCryptPasswordEncoder;
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 
+//cette fonction permet de configuer la securite http
+ 
 @Override
 protected void configure(HttpSecurity http) throws Exception {
 	// TODO Auto-generated method stub
-	super.configure(http);
+	//permet de desactiver la falsification des requetes intersites. 
+	http.csrf().disable();
+	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	//permet a tout le monde d'acceder a toute les url de l'app
+	http.authorizeHttpRequests().anyRequest().permitAll();
+	
+	http.addFilter(null);
 } 
 
 
