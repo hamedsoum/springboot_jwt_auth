@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
@@ -20,7 +22,10 @@ import lombok.NoArgsConstructor;
 // une annotation pour gerer le consctructeur par defaut de la class
 @NoArgsConstructor
 public class User {
+	// specificis l'id pour lombook
 	@Id
+	// cette annotation permet de specifier comment l'id doit etre genere
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name ;
 	private String userName;
